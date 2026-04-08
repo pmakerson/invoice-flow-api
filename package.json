@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/pmakerson/invoice-flow-api/issues"
   },
-  "homepage": "https://github.com/pmakerson/invoice-flow-api#readme"
+  "homepage": "https://github.com/pmakerson/invoice-flow-api#readme",
+  "dependencies": {
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "pg": "^8.20.0",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0",
+    "zod": "^4.3.6"
+  }
 }
