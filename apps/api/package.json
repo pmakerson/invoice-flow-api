@@ -5,10 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/app/server.ts",
-    "db:generate": "drizzle-kit generate --config=src/drizzle.config.ts",
-    "db:push": "drizzle-kit push --config=src/drizzle.config.ts",
-    "db:studio": "drizzle-kit studio --config=src/drizzle.config.ts",
-    "db:seed": "tsx src/db/seeds/seed.ts"
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push"
   },
   "keywords": [],
   "author": "",
