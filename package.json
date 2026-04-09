@@ -7,13 +7,7 @@
     "apps/*"
   ],
   "scripts": {
-    "dev:api": "npm run dev -w apps/api",
-    "drizzle:push": "npm run db:push -w apps/api",
-    "drizzle:seed": "npm run db:seed -w apps/api",
-    "drizzle:studio": "npm run db:studio -w apps/api",
-    "dev:web": "npm run start -w apps/web",
-    "db:up": "docker compose up -d",
-    "db:down": "docker compose down"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
