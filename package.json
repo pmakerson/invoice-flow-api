@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/pmakerson/invoice-flow-api/issues"
   },
-  "homepage": "https://github.com/pmakerson/invoice-flow-api#readme"
+  "homepage": "https://github.com/pmakerson/invoice-flow-api#readme",
+  "dependencies": {
+    "drizzle-kit": "^0.12.8"
+  }
 }
