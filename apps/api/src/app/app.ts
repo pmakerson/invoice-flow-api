@@ -2,6 +2,7 @@ import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import { halfvec } from 'drizzle-orm/pg-core';
 import { registerErrorHandler } from '../shared/errors/error-handler.js';
+import { registerSwagger } from '../config/swagger.js';
 
 export async function buildApp() {
     const app = Fastify({
@@ -11,6 +12,9 @@ export async function buildApp() {
         origin: true
     });
 
+    await registerSwagger(app);
+
     registerErrorHandler(app);
+
     return app;
 }
