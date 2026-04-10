@@ -1,0 +1,1 @@
+ALTER TABLE "invoices" ADD CONSTRAINT "unique_invoice" UNIQUE("invoice_number","supplier_name","invoice_date");
