@@ -29,6 +29,13 @@
       "when": 1775815047205,
       "tag": "0003_charming_the_twelve",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1775831625332,
+      "tag": "0004_melted_swordsman",
+      "breakpoints": true
     }
   ]
 }
