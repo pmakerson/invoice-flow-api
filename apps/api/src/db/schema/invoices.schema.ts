@@ -4,7 +4,6 @@ import {
     pgEnum,
     pgTable,
     timestamp,
-    unique,
     varchar
 } from 'drizzle-orm/pg-core';
 
@@ -41,10 +40,4 @@ export const invoicesTable = pgTable('invoices', {
     ocrConfidence: numeric('ocr_confidence', { precision: 5, scale: 2 }),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull()
-}, (t) => [
-    unique('unique_invoice').on(
-        t.invoiceNumber,
-        t.supplierName,
-        t.invoiceDate
-    )
-]);
+});
