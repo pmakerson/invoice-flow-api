@@ -19,9 +19,6 @@ export class InvoiceService {
             });
             return toInvoiceResponse(created!);
         } catch (err: any) {
-            // Log temporaire pour debug
-            // eslint-disable-next-line no-console
-            console.error('Erreur création facture:', err.code, err?.parent?.code, err?.cause?.code);
             if (
                 err.code === PG_UNIQUE_VIOLATION ||
                 err?.parent?.code === PG_UNIQUE_VIOLATION ||
