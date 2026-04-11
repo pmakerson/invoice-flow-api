@@ -11,7 +11,7 @@ import type {
 export class InvoiceRepository {
   async create(input: CreateInvoiceInput & { id: string; historyId: string; actorId: string | null }) {
     return db.transaction(async (tx) => {
-      
+
       await tx.insert(invoicesTable).values({
         id: input.id,
         invoiceNumber: input.invoiceNumber,
@@ -94,5 +94,27 @@ export class InvoiceRepository {
       rows,
       total: Number(totalRows[0]?.total ?? 0)
     };
+  }
+
+  async findById(id: string): Promise<InvoiceListItem | null> {
+    const [invoice] = await db
+      .select({
+        id: invoicesTable.id,
+        invoiceNumber: invoicesTable.invoiceNumber,
+        supplierName: invoicesTable.supplierName,
+        amount: invoicesTable.amount,
+        currency: invoicesTable.currency,
+        invoiceDate: invoicesTable.invoiceDate,
+        status: invoicesTable.status,
+        assignedTo: invoicesTable.assignedTo,
+        ocrConfidence: invoicesTable.ocrConfidence,
+        createdAt: invoicesTable.createdAt,
+        updatedAt: invoicesTable.updatedAt
+      })
+      .from(invoicesTable)
+      .where(eq(invoicesTable.id, id))
+      .limit(1);
+
+    return invoice ?? null;
   }
 }
