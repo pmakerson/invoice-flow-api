@@ -1,9 +1,10 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
+import { invoiceIdParamsSchema } from './ocr.schemas.js';
+import { InvoiceService } from '../invoices/invoice.service.js';
 import { OcrService } from './ocr.service.js';
 import { OcrRepository } from './ocr.repository.js';
 import { InvoiceRepository } from '../invoices/invoice.repository.js';
 import { FakeOcrService } from './fake-ocr.service.js';
-import { invoiceIdParamsSchema } from '../invoices/invoice.schemas.js';
 
 const ocrService = new OcrService(new InvoiceRepository(), new OcrRepository(), new FakeOcrService());
 

@@ -59,7 +59,7 @@ const processOcrRouteSchema = {
     },
 };
 export async function ocrRoutes(app: FastifyInstance): Promise<void> {
-    app.post('/invoices/process-ocr/:id',
+    app.post('/invoices/:id/process-ocr',
         { schema: processOcrRouteSchema },
         ocrController.processOcr.bind(ocrController)
     );

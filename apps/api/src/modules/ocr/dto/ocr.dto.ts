@@ -12,14 +12,3 @@ export type OcrProcessResponse = {
     processedAt: string;
   };
 };
-
-
-export type OcrData = {
-    rawText: string;
-    vatNumber: string | null;
-    dueDate: string | null;
-    totalBeforeTax: string | null;
-    totalTax: string | null;
-    totalWithTax: string | null;
-    processedAt: Date;
-};
