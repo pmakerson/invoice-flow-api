@@ -14,11 +14,6 @@
   gap: 24px;
 }
 
-.side-panel {
-  display: grid;
-  gap: 24px;
-}
-
 .pagination {
   display: flex;
   align-items: center;
