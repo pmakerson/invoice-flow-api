@@ -28,28 +28,3 @@ export type PaginatedInvoices = {
     totalPages: number;
   };
 };
-
-export type InvoiceHistoryItem = {
-  id: string;
-  invoiceId: string;
-  action: 'INVOICE_CREATED' | 'OCR_PROCESSED' | 'ASSIGNED' | 'APPROVED' | 'REJECTED';
-  actorId: string | null;
-  comment: string | null;
-  createdAt: string;
-};
-
-export type InvoiceOcrData = {
-  rawText: string;
-  vatNumber: string | null;
-  dueDate: string | null;
-  totalBeforeTax: string | null;
-  totalTax: string | null;
-  totalWithTax: string | null;
-  processedAt: string;
-};
-
-export type InvoiceDetails = {
-  invoice: Invoice;
-  ocrData: InvoiceOcrData | null;
-};
-

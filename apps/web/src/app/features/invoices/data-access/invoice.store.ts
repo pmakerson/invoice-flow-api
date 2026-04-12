@@ -8,7 +8,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 
 import { InvoiceApiService } from './invoice-api.service';
-import { Invoice, InvoiceDetails, InvoiceHistoryItem } from './invoice.models';
+import { Invoice } from './invoice.models';
 
 type InvoiceState = {
     invoices: Invoice[];
@@ -19,9 +19,6 @@ type InvoiceState = {
     pageSize: number;
     total: number;
     totalPages: number;
-    history: InvoiceHistoryItem[];
-    loading: boolean;
-    details: InvoiceDetails | null;
 };
 
 const initialState: InvoiceState = {
@@ -31,9 +28,6 @@ const initialState: InvoiceState = {
     pageSize: 10,
     total: 0,
     totalPages: 0,
-    history: [],
-    loading: false,
-    details: null
 };
 
 export const InvoiceStore = signalStore(
@@ -53,13 +47,8 @@ export const InvoiceStore = signalStore(
             patchState(store, { error: null });
         }
 
-        function setLoading(loading: boolean) {
-            patchState(store, { loading });
-        }
-
         return {
             async loadInvoices() {
-                setLoading(true);
                 resetError();
 
                 try {
@@ -80,8 +69,6 @@ export const InvoiceStore = signalStore(
                     });
                 } catch {
                     setError('Failed to load invoices');
-                } finally {
-                    setLoading(false);
                 }
             },
 
@@ -90,7 +77,6 @@ export const InvoiceStore = signalStore(
             },
 
             async processOcr(invoiceId: string) {
-                setLoading(true);
                 resetError();
 
                 try {
@@ -98,36 +84,8 @@ export const InvoiceStore = signalStore(
                     await this.loadInvoices();
                 } catch {
                     setError('Failed to process OCR');
-                } finally {
-                    setLoading(false);
                 }
-            },
-            async loadHistory(invoiceId: string) {
-                setLoading(true);
-                resetError();
-                try {
-                    const history = await firstValueFrom(api.history(invoiceId));
-                    await this.loadDetails(invoiceId);
-                    patchState(store, { history });
-                } catch {
-                    setError('Failed to load invoice history');
-                } finally {
-                    setLoading(false);
-                }
-            },
-            async loadDetails(invoiceId: string) {
-                setLoading(true);
-                resetError();
-
-                try {
-                    const details = await firstValueFrom(api.details(invoiceId));
-                    patchState(store, { details });
-                } catch {
-                    setError('Failed to load invoice details');
-                } finally {
-                    setLoading(false);
-                }
-            },
+            }
         };
     })
 );
