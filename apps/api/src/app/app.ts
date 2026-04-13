@@ -4,6 +4,8 @@ import { registerErrorHandler } from '../shared/errors/error-handler.js';
 import { registerSwagger } from '../config/swagger.js';
 import { healthRoutes } from '../modules/health/health.routes.js';
 import { invoiceRoutes } from '../modules/invoices/invoice.routes.js';
+import { ocrRoutes } from '../modules/ocr/ocr.routes.js';
+import { historyRoutes } from '../modules/history/history.routes.js';
 
 export async function buildApp() {
     const app = Fastify({
@@ -21,6 +23,10 @@ export async function buildApp() {
     await healthRoutes(app);
 
     await invoiceRoutes(app);
+
+    await ocrRoutes(app);
+
+    await historyRoutes(app);
 
     return app;
 }

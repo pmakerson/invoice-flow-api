@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { createInvoiceBodySchema, listInvoicesQuerySchema } from './invoice.schemas.js';
+import { createInvoiceBodySchema, invoiceIdParamsSchema, listInvoicesQuerySchema } from './invoice.schemas.js';
 import { InvoiceRepository } from './invoice.repository.js';
 import { InvoiceService } from './invoice.service.js';
 
@@ -16,6 +16,13 @@ export class InvoiceController {
   async list(request: FastifyRequest) {
     const query = listInvoicesQuerySchema.parse(request.query);
     return invoiceService.list(query);
+  }
+
+  async details(request: FastifyRequest, reply: FastifyReply) {
+    const params = invoiceIdParamsSchema.parse(request.params);
+    const result = await invoiceService.getDetails(params.id);
+
+    return reply.status(200).send(result);
   }
 }
 

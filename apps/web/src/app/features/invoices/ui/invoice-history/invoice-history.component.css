@@ -1,0 +1,19 @@
+.history {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.history-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+p {
+  margin: 6px 0;
+}

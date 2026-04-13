@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { buildPagination } from '../../shared/http/pagination.js';
 import type { CreateInvoiceInput, ListInvoicesQuery } from './dto/invoice.dto.js';
-import { toInvoiceResponse } from './invoice.mapper.js';
+import { toInvoiceDetailsResponse, toInvoiceResponse } from './invoice.mapper.js';
 import { InvoiceRepository } from './invoice.repository.js';
 import { AppError } from '../../shared/errors/app-error.js';
 
@@ -19,9 +19,6 @@ export class InvoiceService {
             });
             return toInvoiceResponse(created!);
         } catch (err: any) {
-            // Log temporaire pour debug
-            // eslint-disable-next-line no-console
-            console.error('Erreur création facture:', err.code, err?.parent?.code, err?.cause?.code);
             if (
                 err.code === PG_UNIQUE_VIOLATION ||
                 err?.parent?.code === PG_UNIQUE_VIOLATION ||
@@ -44,5 +41,20 @@ export class InvoiceService {
             data: result.rows.map(toInvoiceResponse),
             meta: buildPagination(query.page, query.pageSize, result.total)
         };
+    }
+
+    async getDetails(invoiceId: string) {
+        const invoice = await this.invoiceRepository.findById(invoiceId);
+
+        if (!invoice) {
+            throw new AppError('Invoice not found', 404, 'INVOICE_NOT_FOUND');
+        }
+
+        const ocrData = await this.invoiceRepository.findOcrDataByInvoiceId(invoiceId);
+
+        return toInvoiceDetailsResponse({
+            invoice,
+            ocrData
+        });
     }
 }

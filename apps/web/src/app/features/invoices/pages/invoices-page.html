@@ -1,0 +1,38 @@
+<section class="page">
+  <header class="page-header">
+    <div>
+      <h1>Supplier Invoices</h1>
+      <p>Mini Angular UI using standalone components, signals and SignalStore.</p>
+    </div>
+  </header>
+
+  <!-- <app-loading-indicator [visible]="store.loading()" /> -->
+
+  @if (store.error(); as error) {
+    <p class="error">{{ error }}</p>
+  }
+
+  <div class="layout">
+    <div>
+      <app-invoice-table
+        [invoices]="store.invoices()"
+        (ocr)="onOcr($event)"
+        (history)="onHistory($event)"
+      />
+
+      <div class="pagination">
+        <button type="button" (click)="previousPage()" [disabled]="store.page() <= 1">
+          Previous
+        </button>
+        <span>Page {{ store.page() }} / {{ totalPages() || 1 }}</span>
+        <button type="button" (click)="nextPage()" [disabled]="store.page() >= totalPages()">
+          Next
+        </button>
+      </div>
+    </div>
+    <div class="side-panel">
+      <app-invoice-history [items]="store.history()" />
+      <app-invoice-details [details]="store.details()" />
+    </div>
+  </div>
+</section>

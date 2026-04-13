@@ -1,17 +1,18 @@
 import { and, count, desc, eq, ilike } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { invoiceHistoryTable } from '../../db/schema/invoice-history.schema.js';
+import { invoiceHistoryTable, invoiceOcrDataTable } from '../../db/schema/invoice-history.schema.js';
 import { invoicesTable } from '../../db/schema/invoices.schema.js';
 import type {
   CreateInvoiceInput,
   InvoiceListItem,
   ListInvoicesQuery
 } from './dto/invoice.dto.js';
+import type { OcrData } from '../ocr/dto/ocr.dto.js';
 
 export class InvoiceRepository {
   async create(input: CreateInvoiceInput & { id: string; historyId: string; actorId: string | null }) {
     return db.transaction(async (tx) => {
-      
+
       await tx.insert(invoicesTable).values({
         id: input.id,
         invoiceNumber: input.invoiceNumber,
@@ -95,4 +96,45 @@ export class InvoiceRepository {
       total: Number(totalRows[0]?.total ?? 0)
     };
   }
+
+  async findById(id: string): Promise<InvoiceListItem | null> {
+    const [invoice] = await db
+      .select({
+        id: invoicesTable.id,
+        invoiceNumber: invoicesTable.invoiceNumber,
+        supplierName: invoicesTable.supplierName,
+        amount: invoicesTable.amount,
+        currency: invoicesTable.currency,
+        invoiceDate: invoicesTable.invoiceDate,
+        status: invoicesTable.status,
+        assignedTo: invoicesTable.assignedTo,
+        ocrConfidence: invoicesTable.ocrConfidence,
+        createdAt: invoicesTable.createdAt,
+        updatedAt: invoicesTable.updatedAt
+      })
+      .from(invoicesTable)
+      .where(eq(invoicesTable.id, id))
+      .limit(1);
+
+    return invoice ?? null;
+  }
+
+  async findOcrDataByInvoiceId(invoiceId: string): Promise<OcrData | null> {
+    const [ocrData] = await db
+      .select({
+        rawText: invoiceOcrDataTable.rawText,
+        vatNumber: invoiceOcrDataTable.vatNumber,
+        dueDate: invoiceOcrDataTable.dueDate,
+        totalBeforeTax: invoiceOcrDataTable.totalBeforeTax,
+        totalTax: invoiceOcrDataTable.totalTax,
+        totalWithTax: invoiceOcrDataTable.totalWithTax,
+        processedAt: invoiceOcrDataTable.processedAt
+      })
+      .from(invoiceOcrDataTable)
+      .where(eq(invoiceOcrDataTable.invoiceId, invoiceId))
+      .limit(1);
+
+    return ocrData ?? null;
+  }
+
 }

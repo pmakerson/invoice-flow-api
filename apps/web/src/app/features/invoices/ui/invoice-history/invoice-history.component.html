@@ -1,0 +1,15 @@
+<section class="history">
+  <h3>History</h3>
+
+  @if (!items().length) {
+    <p>No history selected.</p>
+  }
+
+  @for (item of items(); track item.id) {
+    <article class="history-item">
+      <strong>{{ item.action }}</strong>
+      <p>{{ item.comment || '-' }}</p>
+      <small>{{ item.createdAt }}</small>
+    </article>
+  }
+</section>

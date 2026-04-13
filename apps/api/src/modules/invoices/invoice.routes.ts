@@ -107,6 +107,17 @@ const listInvoicesRouteSchema = {
     },
 };
 
+const invoiceDetailsRouteSchema = {
+    tags: ['Invoices'],
+    summary: 'Get invoice details',
+    params: {
+        type: 'object',
+        required: ['id'],
+        properties: {
+            id: { type: 'string', format: 'uuid' }
+        }
+    }
+};
 export async function invoiceRoutes(app: FastifyInstance): Promise<void> {
     app.post(
         '/invoices',
@@ -118,5 +129,10 @@ export async function invoiceRoutes(app: FastifyInstance): Promise<void> {
         '/invoices',
         { schema: listInvoicesRouteSchema },
         invoiceController.list.bind(invoiceController),
+    );
+    app.get(
+        '/invoices/:id',
+        { schema: invoiceDetailsRouteSchema },
+        invoiceController.details.bind(invoiceController)
     );
 }
