@@ -38,3 +38,18 @@ export type InvoiceHistoryItem = {
   createdAt: string;
 };
 
+export type InvoiceOcrData = {
+  rawText: string;
+  vatNumber: string | null;
+  dueDate: string | null;
+  totalBeforeTax: string | null;
+  totalTax: string | null;
+  totalWithTax: string | null;
+  processedAt: string;
+};
+
+export type InvoiceDetails = {
+  invoice: Invoice;
+  ocrData: InvoiceOcrData | null;
+};
+
