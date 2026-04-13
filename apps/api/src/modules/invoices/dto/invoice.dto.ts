@@ -57,3 +57,17 @@ export type PaginatedInvoices = {
     totalPages: number;
   };
 };
+
+
+export type InvoiceDetailsResponse = {
+  invoice: InvoiceResponse;
+  ocrData: {
+    rawText: string;
+    vatNumber: string | null;
+    dueDate: string | null;
+    totalBeforeTax: string | null;
+    totalTax: string | null;
+    totalWithTax: string | null;
+    processedAt: string;
+  } | null;
+};

@@ -1,12 +1,13 @@
 import { and, count, desc, eq, ilike } from 'drizzle-orm';
 import { db } from '../../db/client.js';
-import { invoiceHistoryTable } from '../../db/schema/invoice-history.schema.js';
+import { invoiceHistoryTable, invoiceOcrDataTable } from '../../db/schema/invoice-history.schema.js';
 import { invoicesTable } from '../../db/schema/invoices.schema.js';
 import type {
   CreateInvoiceInput,
   InvoiceListItem,
   ListInvoicesQuery
 } from './dto/invoice.dto.js';
+import type { OcrData } from '../ocr/dto/ocr.dto.js';
 
 export class InvoiceRepository {
   async create(input: CreateInvoiceInput & { id: string; historyId: string; actorId: string | null }) {
@@ -117,4 +118,23 @@ export class InvoiceRepository {
 
     return invoice ?? null;
   }
+
+  async findOcrDataByInvoiceId(invoiceId: string): Promise<OcrData | null> {
+    const [ocrData] = await db
+      .select({
+        rawText: invoiceOcrDataTable.rawText,
+        vatNumber: invoiceOcrDataTable.vatNumber,
+        dueDate: invoiceOcrDataTable.dueDate,
+        totalBeforeTax: invoiceOcrDataTable.totalBeforeTax,
+        totalTax: invoiceOcrDataTable.totalTax,
+        totalWithTax: invoiceOcrDataTable.totalWithTax,
+        processedAt: invoiceOcrDataTable.processedAt
+      })
+      .from(invoiceOcrDataTable)
+      .where(eq(invoiceOcrDataTable.invoiceId, invoiceId))
+      .limit(1);
+
+    return ocrData ?? null;
+  }
+
 }
