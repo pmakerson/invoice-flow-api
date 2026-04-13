@@ -26,5 +26,11 @@ export const listInvoicesQuerySchema = z.object({
   supplierName: z.string().trim().min(1).max(255).optional()
 });
 
+export const invoiceIdParamsSchema = z.object({
+  id: z.string()
+});
+
+
 export type CreateInvoiceBody = z.infer<typeof createInvoiceBodySchema>;
 export type ListInvoicesQueryParams = z.infer<typeof listInvoicesQuerySchema>;
+export type InvoiceIdParams = z.infer<typeof invoiceIdParamsSchema>;
