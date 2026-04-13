@@ -20,6 +20,7 @@ type InvoiceState = {
     total: number;
     totalPages: number;
     history: InvoiceHistoryItem[];
+    loading: boolean;
 };
 
 const initialState: InvoiceState = {
@@ -30,6 +31,7 @@ const initialState: InvoiceState = {
     total: 0,
     totalPages: 0,
     history: [],
+    loading: false
 };
 
 export const InvoiceStore = signalStore(
@@ -49,8 +51,13 @@ export const InvoiceStore = signalStore(
             patchState(store, { error: null });
         }
 
+        function setLoading(loading: boolean) {
+            patchState(store, { loading });
+        }
+
         return {
             async loadInvoices() {
+                setLoading(true);
                 resetError();
 
                 try {
@@ -71,6 +78,8 @@ export const InvoiceStore = signalStore(
                     });
                 } catch {
                     setError('Failed to load invoices');
+                } finally {
+                    setLoading(false);
                 }
             },
 
@@ -79,6 +88,7 @@ export const InvoiceStore = signalStore(
             },
 
             async processOcr(invoiceId: string) {
+                setLoading(true);
                 resetError();
 
                 try {
@@ -86,9 +96,12 @@ export const InvoiceStore = signalStore(
                     await this.loadInvoices();
                 } catch {
                     setError('Failed to process OCR');
+                } finally {
+                    setLoading(false);
                 }
             },
             async loadHistory(invoiceId: string) {
+                setLoading(true);
                 resetError();
 
                 try {
@@ -97,6 +110,8 @@ export const InvoiceStore = signalStore(
                     patchState(store, { history });
                 } catch {
                     setError('Failed to load invoice history');
+                } finally {
+                    setLoading(false);
                 }
             },
         };
