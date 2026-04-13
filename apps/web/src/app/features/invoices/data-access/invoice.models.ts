@@ -28,3 +28,13 @@ export type PaginatedInvoices = {
     totalPages: number;
   };
 };
+
+export type InvoiceHistoryItem = {
+  id: string;
+  invoiceId: string;
+  action: 'INVOICE_CREATED' | 'OCR_PROCESSED' | 'ASSIGNED' | 'APPROVED' | 'REJECTED';
+  actorId: string | null;
+  comment: string | null;
+  createdAt: string;
+};
+

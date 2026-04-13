@@ -1,28 +1,30 @@
 <section class="page">
-      <header class="page-header">
-        <div>
-          <h1>Supplier Invoices</h1>
-          <p>Mini Angular UI using standalone components, signals and SignalStore.</p>
-        </div>
-      </header>
+  <header class="page-header">
+    <div>
+      <h1>Supplier Invoices</h1>
+      <p>Mini Angular UI using standalone components, signals and SignalStore.</p>
+    </div>
+  </header>
 
-      @if (store.error(); as error) {
-        <p class="error">{{ error }}</p>
-      }
+  @if (store.error(); as error) {
+    <p class="error">{{ error }}</p>
+  }
 
-      <div class="layout">
-        <div>
-          <app-invoice-table
-            [invoices]="store.invoices()"
-            (ocr)="onOcr($event)"
-          />
+  <div class="layout">
+    <div>
+      <app-invoice-table [invoices]="store.invoices()" (ocr)="onOcr($event)" (history)="onHistory($event)" />
 
-          <div class="pagination">
-            <button type="button" (click)="previousPage()" [disabled]="store.page() <= 1">Previous</button>
-            <span>Page {{ store.page() }} / {{ totalPages() || 1 }}</span>
-            <button type="button" (click)="nextPage()" [disabled]="store.page() >= totalPages()">Next</button>
-          </div>
-        </div>
-
+      <div class="pagination">
+        <button type="button" (click)="previousPage()" [disabled]
+        ="store.page() <= 1">
+          Previous
+        </button>
+        <span>Page {{ store.page() }} / {{ totalPages() || 1 }}</span>
+        <button type="button" (click)="nextPage()" [disabled]="store.page() >= totalPages()">
+          Next
+        </button>
       </div>
-    </section>
+    </div>
+    <app-invoice-history [items]="store.history()" />
+  </div>
+</section>
