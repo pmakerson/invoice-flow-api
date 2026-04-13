@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PaginatedInvoices } from './invoice.models';
+import { InvoiceHistoryItem, PaginatedInvoices } from './invoice.models';
 import { API_BASE_URL } from '../../../core/api/api.config';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -33,4 +33,7 @@ export class InvoiceApiService {
     return this.http.post(`${this.baseUrl}/invoices/process-ocr/${invoiceId}`, {});
   }
 
+  history(invoiceId: string): Observable<InvoiceHistoryItem[]> {
+    return this.http.get<InvoiceHistoryItem[]>(`${this.baseUrl}/invoices/history/${invoiceId}`);
+  }
 }

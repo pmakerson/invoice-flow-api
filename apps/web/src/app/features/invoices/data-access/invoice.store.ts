@@ -8,7 +8,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 
 import { InvoiceApiService } from './invoice-api.service';
-import { Invoice } from './invoice.models';
+import { Invoice, InvoiceHistoryItem } from './invoice.models';
 
 type InvoiceState = {
     invoices: Invoice[];
@@ -19,6 +19,7 @@ type InvoiceState = {
     pageSize: number;
     total: number;
     totalPages: number;
+    history: InvoiceHistoryItem[];
 };
 
 const initialState: InvoiceState = {
@@ -28,6 +29,7 @@ const initialState: InvoiceState = {
     pageSize: 10,
     total: 0,
     totalPages: 0,
+    history: [],
 };
 
 export const InvoiceStore = signalStore(
@@ -85,7 +87,18 @@ export const InvoiceStore = signalStore(
                 } catch {
                     setError('Failed to process OCR');
                 }
-            }
+            },
+            async loadHistory(invoiceId: string) {
+                resetError();
+
+                try {
+                    const history = await firstValueFrom(api.history(invoiceId));
+
+                    patchState(store, { history });
+                } catch {
+                    setError('Failed to load invoice history');
+                }
+            },
         };
     })
 );
