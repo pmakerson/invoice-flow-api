@@ -1,10 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
-import { InvoiceTableComponent } from '../ui/invoice-table.component';
+import { InvoiceTableComponent } from '../ui/invoice-table/invoice-table.component';
 import { InvoiceStore } from '../data-access/invoice.store';
+import { InvoiceHistoryComponent } from '../ui/invoice-history/invoice-history.component';
 
 @Component({
   selector: 'app-invoices-page',
-  imports: [InvoiceTableComponent],
+  imports: [InvoiceTableComponent, InvoiceHistoryComponent],
   templateUrl: './invoices-page.html',
   styleUrl: './invoices-page.css',
 })
@@ -14,7 +15,7 @@ export class InvoicesPage {
   readonly totalPages = computed(() => this.store.totalPages());
 
 
-   async ngOnInit() {
+  async ngOnInit() {
     await this.store.loadInvoices();
   }
 
@@ -22,7 +23,7 @@ export class InvoicesPage {
     await this.store.processOcr(invoiceId);
   }
 
-   async previousPage() {
+  async previousPage() {
     if (this.store.page() <= 1) {
       return;
     }
@@ -38,5 +39,9 @@ export class InvoicesPage {
 
     this.store.setPage(this.store.page() + 1);
     await this.store.loadInvoices();
+  }
+
+  async onHistory(invoiceId: string) {
+    await this.store.loadHistory(invoiceId);
   }
 }
