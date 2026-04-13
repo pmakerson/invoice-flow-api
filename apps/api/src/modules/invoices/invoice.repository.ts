@@ -118,4 +118,23 @@ export class InvoiceRepository {
 
     return invoice ?? null;
   }
+
+  async findOcrDataByInvoiceId(invoiceId: string): Promise<OcrData | null> {
+    const [ocrData] = await db
+      .select({
+        rawText: invoiceOcrDataTable.rawText,
+        vatNumber: invoiceOcrDataTable.vatNumber,
+        dueDate: invoiceOcrDataTable.dueDate,
+        totalBeforeTax: invoiceOcrDataTable.totalBeforeTax,
+        totalTax: invoiceOcrDataTable.totalTax,
+        totalWithTax: invoiceOcrDataTable.totalWithTax,
+        processedAt: invoiceOcrDataTable.processedAt
+      })
+      .from(invoiceOcrDataTable)
+      .where(eq(invoiceOcrDataTable.invoiceId, invoiceId))
+      .limit(1);
+
+    return ocrData ?? null;
+  }
+
 }
