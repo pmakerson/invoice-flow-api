@@ -8,7 +8,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 
 import { InvoiceApiService } from './invoice-api.service';
-import { Invoice, InvoiceHistoryItem } from './invoice.models';
+import { Invoice, InvoiceDetails, InvoiceHistoryItem } from './invoice.models';
 
 type InvoiceState = {
     invoices: Invoice[];
@@ -21,6 +21,7 @@ type InvoiceState = {
     totalPages: number;
     history: InvoiceHistoryItem[];
     loading: boolean;
+    details: InvoiceDetails | null;
 };
 
 const initialState: InvoiceState = {
@@ -31,7 +32,8 @@ const initialState: InvoiceState = {
     total: 0,
     totalPages: 0,
     history: [],
-    loading: false
+    loading: false,
+    details: null
 };
 
 export const InvoiceStore = signalStore(
@@ -103,13 +105,25 @@ export const InvoiceStore = signalStore(
             async loadHistory(invoiceId: string) {
                 setLoading(true);
                 resetError();
-
                 try {
                     const history = await firstValueFrom(api.history(invoiceId));
-
+                    await this.loadDetails(invoiceId);
                     patchState(store, { history });
                 } catch {
                     setError('Failed to load invoice history');
+                } finally {
+                    setLoading(false);
+                }
+            },
+            async loadDetails(invoiceId: string) {
+                setLoading(true);
+                resetError();
+
+                try {
+                    const details = await firstValueFrom(api.details(invoiceId));
+                    patchState(store, { details });
+                } catch {
+                    setError('Failed to load invoice details');
                 } finally {
                     setLoading(false);
                 }

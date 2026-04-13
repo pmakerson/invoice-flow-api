@@ -1,0 +1,37 @@
+<section class="details">
+  <h3>Invoice details</h3>
+
+  @if (details(); as d) {
+      <article class="card">
+        <h4>OCR extracted values</h4>
+
+        @if (d.ocrData; as ocr) {
+          <p><strong>VAT number:</strong> {{ ocr.vatNumber ?? '-' }}</p>
+          <p>
+            <strong>Due date:</strong>
+            {{ ocr.dueDate ? (ocr.dueDate | date:'mediumDate') : '-' }}
+          </p>
+          <p>
+            <strong>Total before tax:</strong>
+            {{ ocr.totalBeforeTax ? (ocr.totalBeforeTax | currency:d.invoice.currency:'symbol':'1.2-2') : '-' }}
+          </p>
+          <p>
+            <strong>Total tax:</strong>
+            {{ ocr.totalTax ? (ocr.totalTax | currency:d.invoice.currency:'symbol':'1.2-2') : '-' }}
+          </p>
+          <p>
+            <strong>Total with tax:</strong>
+            {{ ocr.totalWithTax ? (ocr.totalWithTax | currency:d.invoice.currency:'symbol':'1.2-2') : '-' }}
+          </p>
+          <p>
+            <strong>Processed at:</strong>
+            {{ ocr.processedAt ? (ocr.processedAt | date:'medium') : '-' }}
+          </p>
+        } @else {
+          <p>No OCR data yet.</p>
+        }
+      </article>
+  } @else {
+    <p>Select an invoice to see details.</p>
+  }
+</section>

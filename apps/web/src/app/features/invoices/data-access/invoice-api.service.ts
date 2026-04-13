@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { InvoiceHistoryItem, PaginatedInvoices } from './invoice.models';
+import { InvoiceDetails, InvoiceHistoryItem, PaginatedInvoices } from './invoice.models';
 import { API_BASE_URL } from '../../../core/api/api.config';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -35,5 +35,9 @@ export class InvoiceApiService {
 
   history(invoiceId: string): Observable<InvoiceHistoryItem[]> {
     return this.http.get<InvoiceHistoryItem[]>(`${this.baseUrl}/invoices/history/${invoiceId}`);
+  }
+
+  details(invoiceId: string): Observable<InvoiceDetails> {
+    return this.http.get<InvoiceDetails>(`${this.baseUrl}/invoices/${invoiceId}`);
   }
 }

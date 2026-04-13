@@ -30,6 +30,9 @@
         </button>
       </div>
     </div>
-    <app-invoice-history [items]="store.history()" />
+    <div class="side-panel">
+      <app-invoice-history [items]="store.history()" />
+      <app-invoice-details [details]="store.details()" />
+    </div>
   </div>
 </section>
