@@ -30,7 +30,7 @@ PostgreSQL
 
 Avant de commencer, assurez-vous d’avoir :
 
-- Node.js (18+ recommandé)
+- Node.js (24.14.1 recommandé)
 - Docker installé et démarré sur votre machine
 
 ## Installation et lancement de l’application
@@ -107,7 +107,7 @@ API disponible sur : <http://localhost:3000>
 npm run dev:web
 ```
 
-Application web disponible selon la configuration Vite/Angular locale (généralement <http://localhost:4200> ou <http://localhost:5173>).
+Application web disponible selon la configuration Angular locale (généralement <http://localhost:4200>).
 
 ## Documentation API
 
